@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+
+	<luceneMatchVersion>LUCENE_45</luceneMatchVersion>
+
+	<requestHandler name="standard" class="solr.StandardRequestHandler" default="true" />
+
+	<requestHandler name="/update" class="solr.UpdateRequestHandler" />
+
+	<requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
+
+   <!-- Auto-increment the id field-->
+	<updateRequestProcessorChain>
+	 <processor class="solr.UUIDUpdateProcessorFactory">
+	  <str name="fieldName">id</str>
+	 </processor>
+	 <processor class="solr.LogUpdateProcessorFactory" />
+	 <processor class="solr.RunUpdateProcessorFactory" />
+	</updateRequestProcessorChain>
+
+
+	<admin>
+		<defaultQuery>*:*</defaultQuery>
+	</admin>
+
+	<requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" />
+
+	<!-- Version update-->
+	<updateHandler class="solr.DirectUpdateHandler2">
+
+		<updateLog>
+			<str name="dir">${solr.ulog.dir:}</str>
+		</updateLog>
+
+		<autoCommit>
+			<maxTime>60000</maxTime>
+			<maxDocs>100</maxDocs>
+		</autoCommit>
+	</updateHandler>
+
+	<!-- -->
+
+</config>

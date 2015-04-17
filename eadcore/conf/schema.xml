@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+
+<schema name="simple" version="1.1">
+
+	<types>
+		<fieldType name="text_facets" class="solr.TextField">
+			<analyzer>
+				<charFilter class="solr.MappingCharFilterFactory" />
+				<tokenizer class="solr.KeywordTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+			</analyzer>
+		</fieldType>
+		<fieldtype name="string" class="solr.StrField" />
+		<fieldType name="long" class="solr.TrieLongField" />
+		<fieldtype name="text_general" class="solr.TextField" positionIncrementGap="100" >
+			<analyzer>
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" />
+			</analyzer>
+		</fieldtype>
+		<fieldType name="date" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0" />
+	</types>
+
+	<fields>
+		<field name="id" type="string" required="true" />
+		<field name="subject" type="string" multiValued="true" indexed="true" stored="true" />
+		<field name="content" type="string" multiValued="false" indexed="true" stored="true" />
+		<field name="container" type="string" multiValued="false" indexed="false" stored="true" />
+		<field name="label" type="string" multiValued="false" indexed="false" stored="true" />
+		<field name="geolocation" type="string" multiValued="true" indexed="true" stored="true" />
+		<field name="countryCodes" type="string" multiValued="true" indexed="true" stored="true" />
+		<field name="location" type="string" multiValued="false" indexed="false" stored="true" />
+		<field name="note" type="string" multiValued="false" indexed="false" stored="true" />
+		<field name="url" type="string" multiValued="false" indexed="false" stored="true" />
+		<field name="_version_" type="long" indexed="true" stored="true" multiValued="false" />
+		<field name="timestamp" type="date" indexed="true" stored="true" />
+
+		<dynamicField name="*_string" type="string" multiValued="true" indexed="true" stored="true" />
+		<dynamicField name="*_entity" type="text_facets" multiValued="false" indexed="true" stored="true" />
+		
+		<copyField source="*" dest="fullText" />
+		<copyField source='geolocation' dest='countryCodes' />
+		<field name="fullText" type="text_general" indexed="true" stored="false" multiValued="true" />
+
+	</fields>
+
+	<uniqueKey>id</uniqueKey>
+
+	<defaultSearchField>fullText</defaultSearchField>
+
+	<solrQueryParser defaultOperator="OR" />
+
+</schema>
+
