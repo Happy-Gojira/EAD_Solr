@@ -14,10 +14,11 @@
 		<fieldType name="long" class="solr.TrieLongField" />
 		<fieldtype name="text_general" class="solr.TextField" positionIncrementGap="100" >
 			<analyzer>
-				<tokenizer class="solr.WhitespaceTokenizerFactory" />
-				<filter class="solr.LowerCaseFilterFactory" />
+				<tokenizer class="solr.StandardTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />				
 				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" />
 			</analyzer>
+
 		</fieldtype>
 		<fieldType name="date" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0" />
 	</types>
